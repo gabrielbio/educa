@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratório SoTL — Investigando meu próprio planejamento</title>
+  <style>
+    :root{--bg:#f5f7fb;--surface:#fff;--surface2:#eef3f8;--text:#1d2733;--muted:#667382;--line:#d8e0e8;--accent:#244a73;--accent2:#3f6f9e;--ok:#2d6a4f;--warn:#9a6700;--danger:#9b2226;--shadow:0 8px 24px rgba(31,52,73,.08);--radius:16px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:var(--accent)}
+    header{background:linear-gradient(135deg,#173a5f,#315f8d);color:#fff;padding:34px 20px 28px}.wrap{max-width:1100px;margin:auto}header h1{margin:0 0 8px;font-size:clamp(1.7rem,3vw,2.5rem)}header p{margin:0;max-width:850px;color:#e7eef6}.meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:.9rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18)}
+    main{padding:24px 16px 64px}.layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start}.side{position:sticky;top:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}.side h2{font-size:1rem;margin:0 0 12px}.progressbar{height:10px;background:#e7edf3;border-radius:999px;overflow:hidden;margin-bottom:12px}.progressbar>div{height:100%;width:0;background:var(--accent2);transition:.25s}.steps-mini{display:grid;gap:8px}.mini{display:flex;gap:9px;align-items:center;font-size:.9rem;color:var(--muted)}.dot{width:12px;height:12px;border-radius:50%;border:2px solid #aab6c2;background:#fff;flex:0 0 auto}.mini.done{color:var(--text);font-weight:600}.mini.done .dot{background:var(--ok);border-color:var(--ok)}.dashboard{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}.dash-row{margin:10px 0}.dash-head{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:4px}.dash-track{height:7px;background:#e8edf2;border-radius:999px;overflow:hidden}.dash-fill{height:100%;width:0;background:var(--accent2);transition:.2s}
+    .content{display:grid;gap:18px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.card h2{margin:0 0 6px;font-size:1.35rem;color:var(--accent)}.card h3{margin:22px 0 8px;font-size:1.03rem}.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:700;margin-bottom:4px}.help{background:var(--surface2);border-left:4px solid var(--accent2);padding:12px 14px;border-radius:10px;margin:12px 0 16px}.help strong{color:var(--accent)}.refnote{font-size:.85rem;color:var(--muted);margin-top:6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-weight:650;display:block;margin:12px 0 6px}input[type=text],input[type=url],textarea,select{width:100%;border:1px solid #bfcbd6;border-radius:10px;padding:11px 12px;font:inherit;color:var(--text);background:#fff}textarea{min-height:100px;resize:vertical}input:focus,textarea:focus,select:focus{outline:3px solid rgba(63,111,158,.15);border-color:var(--accent2)}
+    .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}.check{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);padding:10px;border-radius:10px;background:#fff}.check input{margin-top:4px}.principle{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}.principle-top{display:grid;grid-template-columns:1fr 190px;gap:12px;align-items:center}.principle-title{font-weight:750}.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.phase{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcfe}.phase h4{margin:0 0 8px;color:var(--accent)}.buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}button{appearance:none;border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#e8eef4;color:var(--accent)}.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}.danger{background:#f7e7e7;color:var(--danger)}.review{white-space:pre-wrap;background:#f9fbfd;border:1px solid var(--line);border-radius:12px;padding:16px;min-height:150px}.hidden{display:none!important}.alert{border:1px solid #f1d48b;background:#fff7df;color:#6c5200;border-radius:10px;padding:10px 12px;margin-top:10px}.success{border:1px solid #b7dcc8;background:#edf8f2;color:#1e5f43;border-radius:10px;padding:10px 12px;margin-top:10px}.small{font-size:.88rem;color:var(--muted)}.refs li{margin-bottom:10px}footer{margin-top:28px;color:var(--muted);font-size:.88rem}
+    @media(max-width:880px){.layout{grid-template-columns:1fr}.side{position:relative;top:auto}}@media(max-width:650px){.grid2,.timeline,.checks,.principle-top{grid-template-columns:1fr}}@media print{.side,.buttons,.no-print{display:none!important}body{background:#fff}.layout{display:block}.card{box-shadow:none;border:0;padding:0 0 18px}header{background:#fff;color:#000;padding:0 0 20px}header p{color:#333}.pill{color:#333;border:1px solid #ccc;background:#fff}}
+  
+    /* Diagnóstico pelo Framework for Effective Courses */
+    .framework-intro{border:1px solid #c9d8e7;background:#f4f8fc;border-radius:12px;padding:14px;margin:14px 0 18px}
+    .framework-area{border:1px solid var(--line);border-radius:14px;margin:18px 0;background:#fbfcfe;overflow:hidden}
+    .framework-area>h3{margin:0;padding:14px 16px;background:#edf3f8;color:var(--accent);border-bottom:1px solid var(--line)}
+    .rubric-item{padding:16px;border-bottom:1px solid var(--line)}
+    .rubric-item:last-child{border-bottom:0}
+    .rubric-head{display:grid;grid-template-columns:1fr 200px;gap:14px;align-items:center}
+    .rubric-title{font-weight:800}
+    .scale-select{margin:0}
+    .level-guide{margin:10px 0 0;border:1px dashed #c8d3de;border-radius:10px;padding:8px 10px;background:#fff}
+    .level-guide summary{cursor:pointer;font-weight:700;color:var(--accent)}
+    .level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+    .level-box{padding:10px;border-radius:9px;background:#f5f7fa;border:1px solid #e0e6ec;font-size:.88rem}
+    .level-box strong{display:block;margin-bottom:4px}
+    .rubric-just{min-height:74px}
+    .framework-progress{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0}
+    .framework-result{border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:18px;background:#fff}
+    .framework-result h3{margin-top:0}
+    .index-line{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:10px 0 18px}
+    .global-index{width:118px;height:118px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eef4f9;border:8px solid #b9cee1;color:var(--accent);flex:0 0 auto}
+    .global-index strong{font-size:1.75rem;line-height:1}
+    .area-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1;min-width:280px}
+    .area-score{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fafcfe}
+    .area-score .bar{height:7px;border-radius:999px;background:#e4ebf1;overflow:hidden;margin-top:7px}
+    .area-score .bar>span{display:block;height:100%;background:var(--accent2);width:0}
+    .radar-wrap{max-width:680px;margin:10px auto 18px;position:relative}
+    #frameworkRadar{width:100%;height:440px;display:block;background:#fff;border-radius:12px;border:1px solid var(--line)}
+    .framework-details{display:grid;gap:8px;margin-top:12px}
+    .framework-details details{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fafcfe}
+    .framework-details summary{cursor:pointer;font-weight:750}
+    .param-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:7px 0;border-bottom:1px solid #e7edf2;font-size:.9rem}
+    .param-row:last-child{border-bottom:0}
+    .fw-note{font-size:.84rem;color:var(--muted);margin-top:8px}
+    @media(max-width:650px){.rubric-head,.level-grid,.area-scores{grid-template-columns:1fr}.global-index{margin:auto}#frameworkRadar{height:360px}}
+
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Laboratório SoTL</h1><p>Investigando meu próprio planejamento: um roteiro interativo para incorporar a perspectiva do <em>Scholarship of Teaching and Learning</em> (SoTL) ao plano de aula ou atividade educacional.</p><div class="meta"><span class="pill">Sem nota automática</span><span class="pill">Foco em evidências e reflexão</span><span class="pill">Síntese final para o Moodle</span></div></div></header>
+<main><div class="wrap layout">
+<aside class="side"><h2>Seu progresso</h2><div class="progressbar"><div id="progressFill"></div></div><div id="progressText" class="small">0% concluído</div><div class="steps-mini">
+<div class="mini" data-step="1"><span class="dot"></span><span>1. Meu planejamento</span></div><div class="mini" data-step="2"><span class="dot"></span><span>2. Questão SoTL</span></div><div class="mini" data-step="3"><span class="dot"></span><span>3. Cinco princípios</span></div><div class="mini" data-step="4"><span class="dot"></span><span>4. O que avaliar</span></div><div class="mini" data-step="5"><span class="dot"></span><span>5. Quando avaliar</span></div><div class="mini" data-step="6"><span class="dot"></span><span>6. Evidências</span></div><div class="mini" data-step="7"><span class="dot"></span><span>7. Voz dos estudantes</span></div><div class="mini" data-step="8"><span class="dot"></span><span>8. Diagnóstico do planejamento</span></div><div class="mini" data-step="9"><span class="dot"></span><span>9. Decisões</span></div><div class="mini" data-step="10"><span class="dot"></span><span>10. Compartilhamento</span></div></div>
+<div class="dashboard"><h2>Painel SoTL</h2><div class="small">Não é uma nota. Os indicadores mostram apenas o quanto cada dimensão foi explicitada.</div>
+<div class="dash-row"><div class="dash-head"><span>Aprendizagem</span><span id="d1txt">Ainda não definido</span></div><div class="dash-track"><div class="dash-fill" id="d1"></div></div></div>
+<div class="dash-row"><div class="dash-head"><span>Contexto</span><span id="d2txt">Ainda não definido</span></div><div class="dash-track"><div class="dash-fill" id="d2"></div></div></div>
+<div class="dash-row"><div class="dash-head"><span>Evidências</span><span id="d3txt">Ainda não definido</span></div><div class="dash-track"><div class="dash-fill" id="d3"></div></div></div>
+<div class="dash-row"><div class="dash-head"><span>Parceria</span><span id="d4txt">Ainda não definido</span></div><div class="dash-track"><div class="dash-fill" id="d4"></div></div></div>
+<div class="dash-row"><div class="dash-head"><span>Compartilhamento</span><span id="d5txt">Ainda não definido</span></div><div class="dash-track"><div class="dash-fill" id="d5"></div></div></div></div></aside>
+<section class="content">
+<section class="card" id="step1"><div class="eyebrow">Etapa 1</div><h2>Meu planejamento</h2><p>Identifique a atividade ou plano que você já está desenvolvendo. A proposta é investigar a própria prática, não criar uma atividade paralela.</p>
+<div class="grid2"><div><label for="titulo">Título da atividade</label><input id="titulo" type="text"></div><div><label for="disciplina">Disciplina / curso / nível</label><input id="disciplina" type="text"></div></div>
+<label for="publico">Público ou turma</label><input id="publico" type="text"><label for="objetivos">Objetivo(s) de aprendizagem</label><textarea id="objetivos"></textarea>
+<div class="grid2"><div><label for="metodologia">Metodologia / estratégia principal</label><textarea id="metodologia" placeholder="Ex.: aprendizagem baseada em problemas"></textarea></div><div><label for="tecnologias">Tecnologias utilizadas</label><textarea id="tecnologias" placeholder="Ex.: Moodle, Google Docs, ARS..."></textarea></div></div>
+<div class="help"><strong>Ponto de partida:</strong> pense em algo que você realmente gostaria de compreender sobre os efeitos de suas escolhas pedagógicas.</div><label for="curiosidade">O que, nesta proposta, você gostaria de compreender melhor depois de aplicá-la?</label><textarea id="curiosidade"></textarea></section>
+
+<section class="card" id="step2"><div class="eyebrow">Etapa 2</div><h2>Transforme uma inquietação em questão SoTL</h2><p>Uma investigação SoTL costuma partir de um problema ou questão da própria prática e voltar-se para a aprendizagem ou experiência dos estudantes.</p><label>Qual aspecto está mais próximo da sua questão?</label><div class="checks" id="focusChecks">
+<label class="check"><input type="radio" name="foco" value="aprendizagem ou compreensão">Aprendizagem ou compreensão</label><label class="check"><input type="radio" name="foco" value="participação e engajamento">Participação e engajamento</label><label class="check"><input type="radio" name="foco" value="colaboração">Colaboração</label><label class="check"><input type="radio" name="foco" value="autonomia">Autonomia</label><label class="check"><input type="radio" name="foco" value="qualidade das produções">Qualidade das produções</label><label class="check"><input type="radio" name="foco" value="uso da tecnologia">Uso da tecnologia</label><label class="check"><input type="radio" name="foco" value="feedback e revisão">Feedback e revisão</label><label class="check"><input type="radio" name="foco" value="outro">Outro</label></div>
+<label for="questao">Formule sua questão SoTL</label><textarea id="questao" placeholder="Ex.: Como a avaliação por pares influencia a qualidade da versão final do trabalho?"></textarea><div class="help"><strong>Dica:</strong> evite perguntas muito amplas como “a atividade funcionou?”. Prefira questões que permitam observar uma relação, mudança, experiência ou aprendizagem específica.</div><div class="refnote">Base conceitual: Felten (2013).</div></section>
+
+<section class="card" id="step3"><div class="eyebrow">Etapa 3</div><h2>Os cinco princípios de boa prática em SoTL</h2><p>Analise sua proposta a partir dos cinco princípios apresentados por Peter Felten.</p>
+<div class="principle"><div class="principle-top"><div><div class="principle-title">1. Foco na aprendizagem dos estudantes</div><div class="small">Sua questão investiga um aspecto claramente relacionado à aprendizagem ou experiência dos estudantes?</div></div><select id="p1"><option value="">Selecione</option><option>Sim</option><option>Parcialmente</option><option>Ainda não</option></select></div><label for="p1j">Justifique</label><textarea id="p1j"></textarea></div>
+<div class="principle"><div class="principle-top"><div><div class="principle-title">2. Contextualização</div><div class="small">O contexto, a turma, a disciplina e a situação de aprendizagem estão suficientemente claros?</div></div><select id="p2"><option value="">Selecione</option><option>Sim</option><option>Parcialmente</option><option>Ainda não</option></select></div><label for="p2j">Justifique</label><textarea id="p2j"></textarea></div>
+<div class="principle"><div class="principle-top"><div><div class="principle-title">3. Consistência metodológica</div><div class="small">As evidências que pretende recolher poderão responder à questão proposta?</div></div><select id="p3"><option value="">Selecione</option><option>Sim</option><option>Parcialmente</option><option>Ainda não</option></select></div><label for="p3j">Justifique</label><textarea id="p3j"></textarea></div>
+<div class="principle"><div class="principle-top"><div><div class="principle-title">4. Parceria com os estudantes</div><div class="small">Os estudantes participarão, de alguma forma, do processo de avaliação ou interpretação da experiência?</div></div><select id="p4"><option value="">Selecione</option><option>Sim</option><option>Parcialmente</option><option>Ainda não</option></select></div><label for="p4j">Justifique</label><textarea id="p4j"></textarea></div>
+<div class="principle"><div class="principle-top"><div><div class="principle-title">5. Compartilhamento</div><div class="small">Você consegue imaginar uma forma apropriada de compartilhar o que aprender com essa experiência?</div></div><select id="p5"><option value="">Selecione</option><option>Sim</option><option>Parcialmente</option><option>Ainda não</option></select></div><label for="p5j">Justifique</label><textarea id="p5j"></textarea></div>
+<div class="refnote">Referência: Felten, P. (2013). <a href="https://www.researchgate.net/publication/259734804_Principles_of_Good_Practice_in_SoTL" target="_blank" rel="noopener noreferrer"><em>Principles of Good Practice in SoTL</em></a>.</div></section>
+
+<section class="card" id="step4"><div class="eyebrow">Etapa 4</div><h2>O que avaliar?</h2><p>Selecione os aspectos sobre os quais pretende recolher evidências.</p><div class="checks" id="whatChecks">
+<label class="check"><input type="checkbox" value="expectativas dos estudantes">Expectativas dos estudantes</label><label class="check"><input type="checkbox" value="competências/conhecimentos dos estudantes">Competências / conhecimentos</label><label class="check"><input type="checkbox" value="experiências de aprendizagem">Experiências de aprendizagem</label><label class="check"><input type="checkbox" value="percepções sobre a metodologia ou abordagem">Percepções sobre metodologia / abordagem</label><label class="check"><input type="checkbox" value="percepções sobre a própria aprendizagem ou progresso">Percepções sobre aprendizagem / progresso</label><label class="check"><input type="checkbox" value="aprendizagens evidenciadas pelos estudantes">Aprendizagens evidenciadas</label><label class="check"><input type="checkbox" value="experiência de ensino do docente">Experiência de ensino do docente</label><label class="check"><input type="checkbox" value="outro aspecto">Outro</label></div><label for="porqueAvaliar">Por que esses aspectos são importantes para responder à sua questão SoTL?</label><textarea id="porqueAvaliar"></textarea><div class="refnote">Base: <em>Guião de Avaliação da Mudança</em> e <em>Avaliar uma UC</em>.</div></section>
+
+<section class="card" id="step5"><div class="eyebrow">Etapa 5</div><h2>Quando avaliar?</h2><p>A avaliação da prática pode ocorrer antes, durante e depois da atividade.</p><div class="timeline"><div class="phase"><h4>Antes</h4><textarea id="antes" placeholder="Conhecimentos prévios, expectativas..."></textarea></div><div class="phase"><h4>Durante</h4><textarea id="durante" placeholder="Participação, dificuldades, produções intermediárias..."></textarea></div><div class="phase"><h4>Depois</h4><textarea id="depois" placeholder="Aprendizagem, percepção, produto final..."></textarea></div></div><div class="refnote">Base: <em>Avaliar uma UC</em>, avaliação contínua para subsidiar transformação.</div></section>
+
+<section class="card" id="step6"><div class="eyebrow">Etapa 6</div><h2>Que evidências você vai utilizar?</h2><p>Selecione pelo menos duas estratégias ou fontes de evidência.</p><div class="checks" id="evidenceChecks">
+<label class="check"><input type="checkbox" value="trabalhos dos estudantes">Trabalhos dos estudantes</label><label class="check"><input type="checkbox" value="questionários">Questionários</label><label class="check"><input type="checkbox" value="entrevistas ou conversas">Entrevistas / conversas</label><label class="check"><input type="checkbox" value="diários de aprendizagem">Diários de aprendizagem</label><label class="check"><input type="checkbox" value="portfólios de aprendizagem">Portfólios</label><label class="check"><input type="checkbox" value="autoavaliação">Autoavaliação</label><label class="check"><input type="checkbox" value="avaliação por pares">Avaliação por pares</label><label class="check"><input type="checkbox" value="observação das aulas">Observação das aulas</label><label class="check"><input type="checkbox" value="observação por pares">Observação por pares</label><label class="check"><input type="checkbox" value="diário de ensino">Diário de ensino</label><label class="check"><input type="checkbox" value="registros da plataforma">Registros da plataforma</label><label class="check"><input type="checkbox" value="classificações/notas">Classificações / notas</label><label class="check"><input type="checkbox" value="outra fonte">Outra fonte</label></div><label for="evidenciaJust">O que essas evidências permitirão compreender?</label><textarea id="evidenciaJust"></textarea><label for="triangulacao">As fontes selecionadas mostram a mesma coisa ou oferecem perspectivas diferentes? Explique.</label><textarea id="triangulacao"></textarea><div id="evidenceAlert" class="alert hidden">Selecione pelo menos duas fontes de evidência.</div><div class="refnote">Base: <em>Guião de Avaliação da Mudança</em>.</div></section>
+
+<section class="card" id="step7"><div class="eyebrow">Etapa 7</div><h2>Onde está a voz dos estudantes?</h2><p>Considere os estudantes como participantes do processo de avaliação da experiência.</p><div class="checks" id="studentVoiceChecks">
+<label class="check"><input type="checkbox" value="fornecendo feedback">Fornecendo feedback</label><label class="check"><input type="checkbox" value="realizando autoavaliação">Realizando autoavaliação</label><label class="check"><input type="checkbox" value="participando de avaliação por pares">Participando de avaliação por pares</label><label class="check"><input type="checkbox" value="discutindo resultados">Discutindo os resultados</label><label class="check"><input type="checkbox" value="ajudando a interpretar evidências">Ajudando a interpretar evidências</label><label class="check"><input type="checkbox" value="sugerindo mudanças">Sugerindo mudanças</label><label class="check"><input type="checkbox" value="outra forma">Outra forma</label><label class="check"><input type="checkbox" value="ainda não definido">Ainda não definido</label></div><label for="studentVoiceJust">Explique como essa participação ocorrerá</label><textarea id="studentVoiceJust"></textarea><div class="refnote">Base: Felten (2013) e <em>Avaliar uma UC</em>.</div></section>
+
+
+<section class="card" id="step8">
+  <div class="eyebrow">Etapa 8</div>
+  <h2>Diagnóstico do planejamento pelo Framework for Effective Courses</h2>
+  <p>Agora, analise seu planejamento utilizando as quatro áreas e os parâmetros do <em>Framework for Effective Courses — Evaluation Checklist</em>, da University of Idaho. Para cada parâmetro, escolha o nível que melhor representa sua proposta atual e registre, quando possível, uma evidência ou justificativa baseada no próprio planejamento.</p>
+
+  <div class="framework-intro">
+    <strong>Escala utilizada:</strong> <strong>Emergente</strong>, <strong>Desenvolvido</strong> e <strong>Robusto</strong>.<br>
+    Para permitir a visualização gráfica, o simulador converte didaticamente os níveis em 0%, 50% e 100%. O índice de cada área é a média de seus parâmetros e o índice global é a média das quatro áreas. <strong>Esse índice é uma adaptação didática deste simulador e não faz parte do instrumento original da University of Idaho.</strong>
+  </div>
+
+  <div class="framework-progress">
+    <span id="fwProgressText" class="status">0 de 16 parâmetros avaliados</span>
+    <span class="small">O gráfico será exibido quando todos os parâmetros forem preenchidos.</span>
+  </div>
+
+  <div class="framework-area" data-area="design">
+    <h3>I. Desenho do curso</h3>
+
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Metas e objetivos</div><div class="small">Clareza, localização, mensurabilidade e alinhamento dos objetivos.</div></div><select id="fw_goals" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Objetivos pouco claros, difíceis de localizar ou não formulados como resultados mensuráveis.</div><div class="level-box"><strong>Desenvolvido</strong>Objetivos claros, localizáveis e mensuráveis, permitindo ao estudante compreender o que deverá aprender.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, explicita a finalidade da proposta e sua relação com resultados mais amplos do curso/programa.</div></div></details>
+      <label for="fw_goals_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_goals_j" class="rubric-just"></textarea>
+    </div>
+
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Apresentação do conteúdo</div><div class="small">Organização, sequência, clareza e integração dos materiais.</div></div><select id="fw_content" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>A navegação ou sequência não é intuitiva e os materiais podem estar incompletos ou pouco integrados aos objetivos.</div><div class="level-box"><strong>Desenvolvido</strong>Conteúdo organizado em progressão lógica, dividido em unidades manejáveis e integrado aos objetivos.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, integra recursos adicionais de forma significativa e favorece que estudantes também compartilhem ou produzam materiais relevantes.</div></div></details>
+      <label for="fw_content_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_content_j" class="rubric-just"></textarea>
+    </div>
+
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Engajamento do estudante</div><div class="small">Participação ativa, pensamento de ordem superior e relação das atividades com os objetivos.</div></div><select id="fw_engagement" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>É pouco claro como as estratégias promovem os objetivos e há pouca exigência de análise, resolução de problemas ou reflexão.</div><div class="level-box"><strong>Desenvolvido</strong>As atividades promovem interação significativa, pensamento de ordem superior e alcance dos objetivos.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, explicita como as estratégias favorecem os objetivos, a aprendizagem autodirigida e diferentes necessidades de aprendizagem.</div></div></details>
+      <label for="fw_engagement_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_engagement_j" class="rubric-just"></textarea>
+    </div>
+
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Uso da tecnologia</div><div class="small">Função pedagógica das ferramentas e mídias.</div></div><select id="fw_technology" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>A tecnologia é pouco explorada ou usada principalmente para reproduzir práticas centradas no professor e entregar conteúdo.</div><div class="level-box"><strong>Desenvolvido</strong>As tecnologias apoiam os objetivos, o acesso aos materiais e o engajamento dos estudantes como participantes ativos.</div><div class="level-box"><strong>Robusto</strong>A tecnologia vai além da entrega de conteúdo e favorece conceitos centrais, pensamento de ordem superior e investigação colaborativa.</div></div></details>
+      <label for="fw_technology_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_technology_j" class="rubric-just"></textarea>
+    </div>
+
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Citação adequada</div><div class="small">Identificação e referência dos materiais utilizados.</div></div><select id="fw_citation" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Materiais de outras fontes nem sempre são claramente identificados ou referenciados.</div><div class="level-box"><strong>Desenvolvido</strong>Textos, imagens, vídeos e outros materiais externos são identificados e referenciados adequadamente.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, o planejamento orienta os estudantes sobre como citar fontes e modela boas práticas de citação.</div></div></details>
+      <label for="fw_citation_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_citation_j" class="rubric-just"></textarea>
+    </div>
+  </div>
+
+  <div class="framework-area" data-area="interaction">
+    <h3>II. Interação e colaboração</h3>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Comunidade</div><div class="small">Oportunidades de interação e construção de comunidade de aprendizagem.</div></div><select id="fw_community" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Há poucas oportunidades planejadas de interação entre estudantes e entre estudantes e docente.</div><div class="level-box"><strong>Desenvolvido</strong>Há comunicação frequente e interações significativas entre os participantes.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, atividades colaborativas reforçam os objetivos e desenvolvem capacidades como trabalho em equipe, cooperação, negociação e construção de consenso.</div></div></details>
+      <label for="fw_community_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_community_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Comunicação</div><div class="small">Estratégias de comunicação, presença docente e critérios de participação.</div></div><select id="fw_communication" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>A comunicação é pouco planejada ou se concentra em atividades de baixa complexidade e explicações centradas no docente.</div><div class="level-box"><strong>Desenvolvido</strong>Há oportunidades adequadas de interação síncrona e/ou assíncrona, participação docente e feedback.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, são explicitadas expectativas de frequência, quantidade e qualidade da participação, com critérios ou modelos.</div></div></details>
+      <label for="fw_communication_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_communication_j" class="rubric-just"></textarea>
+    </div>
+  </div>
+
+  <div class="framework-area" data-area="assessment">
+    <h3>III. Avaliação</h3>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Expectativas</div><div class="small">Clareza das instruções, critérios e relação das avaliações com os objetivos.</div></div><select id="fw_expectations" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>As avaliações têm pouca relação com os objetivos e as expectativas ou critérios não estão claros.</div><div class="level-box"><strong>Desenvolvido</strong>Políticas, instruções e critérios de avaliação estão claramente apresentados.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, cada avaliação se alinha explicitamente aos objetivos e oferece rubricas, critérios descritivos ou modelos de bom desempenho.</div></div></details>
+      <label for="fw_expectations_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_expectations_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Mensuração do desempenho</div><div class="small">Capacidade das avaliações de evidenciar os resultados de aprendizagem.</div></div><select id="fw_measurement" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Não está claro se as tarefas medem o que se pretende; predominam atividades de baixa complexidade, pouco variadas ou pouco frequentes.</div><div class="level-box"><strong>Desenvolvido</strong>As avaliações medem os objetivos, são coerentes com atividades e recursos, e ocorrem de forma variada e sequenciada.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, utiliza múltiplos tipos de avaliação, pensamento de ordem superior, situações autênticas e critérios descritivos.</div></div></details>
+      <label for="fw_measurement_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_measurement_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Autoavaliação e avaliação por pares</div><div class="small">Oportunidades de autorregulação, feedback formativo e avaliação entre estudantes.</div></div><select id="fw_selfpeer" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Há poucas oportunidades de autoavaliação ou feedback antes das atividades avaliativas.</div><div class="level-box"><strong>Desenvolvido</strong>Os estudantes recebem feedback ou podem verificar sua aprendizagem antes das tarefas avaliadas.</div><div class="level-box"><strong>Robusto</strong>Há feedback construtivo e significativo e amplas oportunidades de autoavaliação e/ou avaliação por pares ao longo da proposta.</div></div></details>
+      <label for="fw_selfpeer_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_selfpeer_j" class="rubric-just"></textarea>
+    </div>
+  </div>
+
+  <div class="framework-area" data-area="support">
+    <h3>IV. Apoio ao estudante</h3>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Tutoriais, ajuda e recursos</div><div class="small">Facilidade de localizar orientações e recursos de apoio.</div></div><select id="fw_resources" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Ajuda e recursos não são oferecidos ou são difíceis de localizar.</div><div class="level-box"><strong>Desenvolvido</strong>Há orientação inicial clara, instruções de onde buscar ajuda e recursos facilmente localizáveis.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, oferece materiais de autoajuda ou tutoriais em diferentes modalidades, como texto, áudio ou vídeo.</div></div></details>
+      <label for="fw_resources_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_resources_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Informações do docente</div><div class="small">Canais de contato, papel docente e orientação sobre acompanhamento.</div></div><select id="fw_instructor" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Contato, tempo de resposta, papel docente ou procedimentos de entrega/devolutiva são pouco claros.</div><div class="level-box"><strong>Desenvolvido</strong>Informações de contato e expectativas de resposta estão claras, assim como os procedimentos de acompanhamento.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, há múltiplas formas de contato e clareza sobre o papel do docente, sua forma de atuação e o apoio oferecido.</div></div></details>
+      <label for="fw_instructor_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_instructor_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Preparação e políticas</div><div class="small">Pré-requisitos, orientações e regras necessárias à participação.</div></div><select id="fw_policies" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Há pouca informação sobre preparação, pré-requisitos ou políticas.</div><div class="level-box"><strong>Desenvolvido</strong>Pré-requisitos acadêmicos/técnicos, orientações e políticas relevantes estão claramente articulados.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, expectativas sobre convivência, comportamento e comunicação estão explicitadas e facilmente localizáveis.</div></div></details>
+      <label for="fw_policies_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_policies_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Acessibilidade técnica</div><div class="small">Formatos, tamanho de arquivos, requisitos tecnológicos e alternativas de acesso.</div></div><select id="fw_technical" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Arquivos, formatos ou softwares podem criar barreiras e não há alternativas adequadas.</div><div class="level-box"><strong>Desenvolvido</strong>Os recursos são preparados para acesso on-line, com requisitos, instruções e eventuais custos claramente indicados.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, oferece alternativas de formato, links para softwares necessários e sinalização de arquivos que podem exigir maior tempo ou capacidade de acesso.</div></div></details>
+      <label for="fw_technical_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_technical_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Adaptações para estudantes com deficiência</div><div class="small">Mecanismos e recursos que favorecem participação plena.</div></div><select id="fw_disability" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Há pouca informação ou o desenho dificulta a incorporação de mecanismos de apoio.</div><div class="level-box"><strong>Desenvolvido</strong>O planejamento contempla políticas e mecanismos que permitem a participação de estudantes que necessitam de adaptações.</div><div class="level-box"><strong>Robusto</strong>Além do anterior, recursos alternativos e mecanismos de apoio já estão incorporados ao desenho da proposta.</div></div></details>
+      <label for="fw_disability_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_disability_j" class="rubric-just"></textarea>
+    </div>
+    <div class="rubric-item">
+      <div class="rubric-head"><div><div class="rubric-title">Feedback do estudante</div><div class="small">Oportunidades para os estudantes avaliarem a experiência e contribuírem para seu aprimoramento.</div></div><select id="fw_feedback" class="scale-select fw-select"><option value="">Selecione o nível</option><option value="0">Emergente</option><option value="50">Desenvolvido</option><option value="100">Robusto</option></select></div>
+      <details class="level-guide"><summary>Como diferenciar os níveis?</summary><div class="level-grid"><div class="level-box"><strong>Emergente</strong>Há poucas oportunidades para feedback dos estudantes, ou não há condições adequadas de privacidade.</div><div class="level-box"><strong>Desenvolvido</strong>Os estudantes podem fornecer feedback, inclusive de forma anônima, ao final da experiência.</div><div class="level-box"><strong>Robusto</strong>O feedback dos estudantes é solicitado durante e ao final da experiência, permitindo ajustes e reflexão sobre o processo.</div></div></details>
+      <label for="fw_feedback_j">Evidência ou justificativa no seu planejamento</label><textarea id="fw_feedback_j" class="rubric-just"></textarea>
+    </div>
+  </div>
+
+  <div id="frameworkIncomplete" class="alert">Preencha os 16 parâmetros para gerar o diagnóstico completo e o gráfico.</div>
+
+  <div id="frameworkResult" class="framework-result hidden">
+    <h3>Resultado do diagnóstico</h3>
+    <div class="index-line">
+      <div class="global-index"><strong id="fwGlobal">0%</strong><span>índice global</span></div>
+      <div class="area-scores">
+        <div class="area-score"><strong>Desenho do curso</strong><div><span id="fwDesignTxt">0%</span></div><div class="bar"><span id="fwDesignBar"></span></div></div>
+        <div class="area-score"><strong>Interação e colaboração</strong><div><span id="fwInteractionTxt">0%</span></div><div class="bar"><span id="fwInteractionBar"></span></div></div>
+        <div class="area-score"><strong>Avaliação</strong><div><span id="fwAssessmentTxt">0%</span></div><div class="bar"><span id="fwAssessmentBar"></span></div></div>
+        <div class="area-score"><strong>Apoio ao estudante</strong><div><span id="fwSupportTxt">0%</span></div><div class="bar"><span id="fwSupportBar"></span></div></div>
+      </div>
+    </div>
+
+    <div class="radar-wrap"><canvas id="frameworkRadar" aria-label="Gráfico radar das quatro áreas do Framework"></canvas></div>
+    <div id="fwInterpretation" class="help"></div>
+    <div id="fwAreaDetails" class="framework-details"></div>
+    <p class="fw-note">Leitura da escala no gráfico: Emergente = 0%; Desenvolvido = 50%; Robusto = 100%. Os percentuais e o índice global são uma adaptação didática para visualização e não integram a rubrica original.</p>
+  </div>
+
+  <label for="frameworkPriority">Ao observar o diagnóstico, qual aspecto ou área você considera prioritário aprimorar? Justifique.</label>
+  <textarea id="frameworkPriority" placeholder="Não é obrigatório escolher a área de menor índice; considere o contexto e os objetivos de sua proposta."></textarea>
+
+  <label for="frameworkAction">Que alteração concreta você pretende realizar no planejamento a partir desta análise?</label>
+  <textarea id="frameworkAction"></textarea>
+
+  <div class="refnote">Base: University of Idaho, <em>Framework for Effective Courses — Evaluation Checklist</em> (2015). Os nomes das áreas, parâmetros e níveis foram traduzidos para o português; as descrições foram adaptadas ao contexto de análise de um planejamento educacional.</div>
+</section>
+
+
+<section class="card" id="step9"><div class="eyebrow">Etapa 9</div><h2>O que você faria com os resultados?</h2><p>Antecipe como diferentes resultados poderiam orientar decisões pedagógicas.</p><label for="manter">Que resultado faria você manter a estratégia?</label><textarea id="manter"></textarea><label for="repensar">Que resultado faria você repensá-la?</label><textarea id="repensar"></textarea><label for="mudar">Se as evidências mostrarem que a estratégia não produziu o efeito esperado, o que você poderia modificar?</label><textarea id="mudar"></textarea><div class="help"><strong>Ideia central:</strong> evidência → interpretação → decisão → melhoria da prática.</div></section>
+
+<section class="card" id="step10"><div class="eyebrow">Etapa 10</div><h2>Como compartilhar o que você aprendeu?</h2><p>O SoTL inclui tornar o processo e os resultados apropriadamente públicos.</p><div class="checks" id="shareChecks">
+<label class="check"><input type="checkbox" value="colegas da disciplina">Colegas da disciplina</label><label class="check"><input type="checkbox" value="colegas da área">Colegas da área</label><label class="check"><input type="checkbox" value="colegiado ou NDE">Colegiado / NDE</label><label class="check"><input type="checkbox" value="evento sobre ensino">Evento sobre ensino</label><label class="check"><input type="checkbox" value="relato de experiência">Relato de experiência</label><label class="check"><input type="checkbox" value="artigo ou trabalho acadêmico">Artigo / trabalho acadêmico</label><label class="check"><input type="checkbox" value="portfólio docente ou repositório">Portfólio docente / repositório</label><label class="check"><input type="checkbox" value="outra forma">Outra forma</label></div><label for="shareJust">Por que essa forma de compartilhamento seria adequada?</label><textarea id="shareJust"></textarea><div class="refnote">Base: Felten (2013), princípio de tornar a investigação apropriadamente pública.</div></section>
+
+<section class="card"><div class="eyebrow">Revisão</div><h2>Meu plano SoTL</h2><p>Revise suas respostas e gere uma síntese para publicar no Moodle junto com o link do seu planejamento.</p><label for="padletLink">Link do seu planejamento / Padlet</label><input id="padletLink" type="url" placeholder="https://..."><label for="reflexaoFinal">Reflexão final</label><textarea id="reflexaoFinal" placeholder="O que mudou em sua forma de olhar para esse planejamento depois de analisá-lo sob a perspectiva do SoTL?"></textarea><div class="buttons no-print"><button class="primary" id="generateBtn">Gerar síntese para o Moodle</button><button class="secondary" id="copyBtn">Copiar síntese</button><button class="ghost" id="printBtn">Imprimir / salvar em PDF</button><button class="danger" id="resetBtn">Limpar respostas</button></div><div id="genMessage" class="success hidden">Síntese gerada.</div><h3>Síntese</h3><div id="summary" class="review">Preencha as etapas e clique em “Gerar síntese para o Moodle”.</div></section>
+
+<section class="card"><div class="eyebrow">Referências</div><h2>Base conceitual utilizada no simulador</h2><ol class="refs"><li><strong>FELTEN, Peter.</strong> <a href="https://www.researchgate.net/publication/259734804_Principles_of_Good_Practice_in_SoTL" target="_blank" rel="noopener noreferrer">Principles of Good Practice in SoTL</a>. <em>Teaching & Learning Inquiry</em>, v. 1, n. 1, p. 121–125, 2013.</li><li><strong>UNIVERSITY OF IDAHO.</strong> <em>Framework for Effective Courses — Evaluation Checklist</em>. Version Feb. 2015.</li></ol><p class="small">O simulador foi estruturado a partir dos materiais acima. Ele não substitui as leituras e vídeos da que abordam o assunto; funciona como roteiro de aplicação dos princípios ao planejamento da atividade.</p></section>
+<footer><p>Laboratório SoTL — recurso didático para apoio ao planejamento e à reflexão sobre a prática docente.</p></footer>
+</section></div></main>
+<script>
+(function(){
+const $=id=>document.getElementById(id), inputs=[...document.querySelectorAll('input,textarea,select')], key='laboratorio_sotl_v1';
+const t=id=>($(id)?.value||'').trim(), checked=id=>[...document.querySelectorAll('#'+id+' input[type=checkbox]:checked')].map(x=>x.value), radio=n=>document.querySelector('input[name="'+n+'"]:checked')?.value||'';
+
+const fwAreas={
+ design:{name:'Desenho do curso',items:[['fw_goals','Metas e objetivos'],['fw_content','Apresentação do conteúdo'],['fw_engagement','Engajamento do estudante'],['fw_technology','Uso da tecnologia'],['fw_citation','Citação adequada']]},
+ interaction:{name:'Interação e colaboração',items:[['fw_community','Comunidade'],['fw_communication','Comunicação']]},
+ assessment:{name:'Avaliação',items:[['fw_expectations','Expectativas'],['fw_measurement','Mensuração do desempenho'],['fw_selfpeer','Autoavaliação e avaliação por pares']]},
+ support:{name:'Apoio ao estudante',items:[['fw_resources','Tutoriais, ajuda e recursos'],['fw_instructor','Informações do docente'],['fw_policies','Preparação e políticas'],['fw_technical','Acessibilidade técnica'],['fw_disability','Adaptações para estudantes com deficiência'],['fw_feedback','Feedback do estudante']]}
+};
+const levelName=v=>v===100?'Robusto':v===50?'Desenvolvido':v===0?'Emergente':'Não avaliado';
+const allFwIds=Object.values(fwAreas).flatMap(a=>a.items.map(i=>i[0]));
+
+function save(){const s={};inputs.forEach((e,i)=>{const k=e.id||e.name+'_'+i;s[k]=(e.type==='checkbox'||e.type==='radio')?e.checked:e.value});localStorage.setItem(key,JSON.stringify(s));update()}
+function restore(){try{const s=JSON.parse(localStorage.getItem(key)||'{}');inputs.forEach((e,i)=>{const k=e.id||e.name+'_'+i;if(!(k in s))return;if(e.type==='checkbox'||e.type==='radio')e.checked=!!s[k];else e.value=s[k]})}catch(e){}update()}
+inputs.forEach(e=>{e.addEventListener('input',save);e.addEventListener('change',save)});
+
+function frameworkComplete(){return allFwIds.every(id=>t(id)!=='')}
+function complete(){return[
+ !!(t('titulo')&&t('objetivos')&&t('curiosidade')),
+ !!(t('questao')&&radio('foco')),
+ !!(t('p1')&&t('p2')&&t('p3')&&t('p4')&&t('p5')&&t('p1j')&&t('p2j')&&t('p3j')&&t('p4j')&&t('p5j')),
+ !!(checked('whatChecks').length&&t('porqueAvaliar')),
+ !!(t('antes')||t('durante')||t('depois')),
+ !!(checked('evidenceChecks').length>=2&&t('evidenciaJust')&&t('triangulacao')),
+ !!(checked('studentVoiceChecks').length&&t('studentVoiceJust')),
+ !!(frameworkComplete()&&t('frameworkPriority')&&t('frameworkAction')),
+ !!(t('manter')&&t('repensar')&&t('mudar')),
+ !!(checked('shareChecks').length&&t('shareJust'))
+]}
+function dash(id,txt,score){$(id).style.width=score+'%';$(txt).textContent=score>=80?'Explicitado':score>=35?'Em construção':'Ainda não definido'}
+
+function fwScores(){
+ const scores={}, details={};
+ for(const [areaKey,area] of Object.entries(fwAreas)){
+   const vals=[];details[areaKey]=[];
+   area.items.forEach(([id,label])=>{const raw=t(id);const v=raw===''?null:Number(raw);if(v!==null)vals.push(v);details[areaKey].push({id,label,value:v,level:v===null?'Não avaliado':levelName(v)})});
+   scores[areaKey]=vals.length===area.items.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;
+ }
+ const full=Object.values(scores).every(v=>v!==null);
+ const global=full?Object.values(scores).reduce((a,b)=>a+b,0)/4:null;
+ return {scores,details,full,global};
+}
+
+function drawRadar(scores){
+ const canvas=$('frameworkRadar'); if(!canvas)return;
+ const rect=canvas.getBoundingClientRect(); const cssW=Math.max(320,rect.width||620), cssH=parseFloat(getComputedStyle(canvas).height)||440;
+ const dpr=window.devicePixelRatio||1; canvas.width=cssW*dpr; canvas.height=cssH*dpr;
+ const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cssW,cssH);
+ const cx=cssW/2,cy=cssH/2+8,r=Math.min(cssW*0.31,cssH*0.34);const vals=[scores.design,scores.interaction,scores.assessment,scores.support];
+ const labels=['Desenho do curso','Interação e colaboração','Avaliação','Apoio ao estudante'];
+ const angles=[-Math.PI/2,0,Math.PI/2,Math.PI];
+ ctx.font='12px system-ui, sans-serif';ctx.strokeStyle='#d7e0e8';ctx.lineWidth=1;
+ [25,50,75,100].forEach(level=>{ctx.beginPath();angles.forEach((a,i)=>{const rr=r*level/100,x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.stroke();ctx.fillStyle='#8190a0';if(level<100)ctx.fillText(level+'%',cx+5,cy-r*level/100+12)});
+ ctx.strokeStyle='#c4ced8';angles.forEach(a=>{ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);ctx.stroke()});
+ ctx.beginPath();vals.forEach((v,i)=>{const rr=r*v/100,a=angles[i],x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fillStyle='rgba(63,111,158,.22)';ctx.fill();ctx.strokeStyle='#315f8d';ctx.lineWidth=3;ctx.stroke();
+ vals.forEach((v,i)=>{const rr=r*v/100,a=angles[i],x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#244a73';ctx.fill()});
+ ctx.fillStyle='#1d2733';ctx.font='600 13px system-ui, sans-serif';
+ ctx.textAlign='center';ctx.fillText(labels[0]+' ('+Math.round(vals[0])+'%)',cx,cy-r-24);
+ ctx.textAlign='left';wrapText(ctx,labels[1]+' ('+Math.round(vals[1])+'%)',cx+r+16,cy-7,Math.max(110,cssW-cx-r-20),16);
+ ctx.textAlign='center';ctx.fillText(labels[2]+' ('+Math.round(vals[2])+'%)',cx,cy+r+34);
+ ctx.textAlign='right';wrapTextRight(ctx,labels[3]+' ('+Math.round(vals[3])+'%)',cx-r-16,cy-7,Math.max(110,cx-r-20),16);
+ }
+function wrapText(ctx,text,x,y,maxWidth,lineHeight){const words=text.split(' ');let line='',yy=y;for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,yy);line=word;yy+=lineHeight}else line=test}ctx.fillText(line,x,yy)}
+function wrapTextRight(ctx,text,x,y,maxWidth,lineHeight){const words=text.split(' ');let line='',lines=[];for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}lines.push(line);lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lineHeight))}
+
+function renderFramework(){
+ const answered=allFwIds.filter(id=>t(id)!=='').length;$('fwProgressText').textContent=answered+' de '+allFwIds.length+' parâmetros avaliados';
+ const r=fwScores();$('frameworkIncomplete').classList.toggle('hidden',r.full);$('frameworkResult').classList.toggle('hidden',!r.full);if(!r.full)return;
+ const round=v=>Math.round(v);
+ $('fwGlobal').textContent=round(r.global)+'%';
+ [['design','fwDesignTxt','fwDesignBar'],['interaction','fwInteractionTxt','fwInteractionBar'],['assessment','fwAssessmentTxt','fwAssessmentBar'],['support','fwSupportTxt','fwSupportBar']].forEach(([k,txt,bar])=>{$(txt).textContent=round(r.scores[k])+'%';$(bar).style.width=r.scores[k]+'%'});
+ const entries=Object.entries(r.scores);const low=entries.reduce((a,b)=>a[1]<=b[1]?a:b),high=entries.reduce((a,b)=>a[1]>=b[1]?a:b);
+ $('fwInterpretation').innerHTML='<strong>Leitura do diagnóstico:</strong> o maior índice ocorreu em <strong>'+fwAreas[high[0]].name+'</strong> ('+round(high[1])+'%) e o menor em <strong>'+fwAreas[low[0]].name+'</strong> ('+round(low[1])+'%). Esses resultados não representam uma nota; use-os para localizar aspectos mais e menos explicitados no planejamento e decidir, considerando seu contexto, o que merece revisão.';
+ $('fwAreaDetails').innerHTML=Object.entries(fwAreas).map(([k,a])=>'<details><summary>'+a.name+' — '+round(r.scores[k])+'%</summary>'+r.details[k].map(p=>'<div class="param-row"><span>'+p.label+'</span><strong>'+p.level+'</strong></div>').join('')+'</details>').join('');
+ requestAnimationFrame(()=>drawRadar(r.scores));
+}
+
+function update(){
+ const d=complete();d.forEach((v,i)=>document.querySelector('.mini[data-step="'+(i+1)+'"]').classList.toggle('done',v));const pct=Math.round(d.filter(Boolean).length/d.length*100);$('progressFill').style.width=pct+'%';$('progressText').textContent=pct+'% concluído';
+ let a=(t('objetivos')?30:0)+(t('questao')?40:0)+(t('p1j')?30:0),c=((t('disciplina')||t('publico'))?40:0)+(t('p2j')?35:0)+(t('titulo')?25:0),e=(checked('evidenceChecks').length>=2?45:0)+(t('evidenciaJust')?30:0)+(t('triangulacao')?25:0),p=(checked('studentVoiceChecks').length?45:0)+(t('studentVoiceJust')?35:0)+(t('p4j')?20:0),s=(checked('shareChecks').length?50:0)+(t('shareJust')?30:0)+(t('p5j')?20:0);dash('d1','d1txt',a);dash('d2','d2txt',c);dash('d3','d3txt',e);dash('d4','d4txt',p);dash('d5','d5txt',s);const n=checked('evidenceChecks').length;$('evidenceAlert').classList.toggle('hidden',n>=2||n===0);renderFramework();
+}
+function list(a){if(!a.length)return'não definido';if(a.length===1)return a[0];return a.slice(0,-1).join(', ')+' e '+a[a.length-1]}
+function frameworkSummary(){const r=fwScores();if(!r.full)return'Diagnóstico ainda não concluído.';return `Desenho do curso: ${Math.round(r.scores.design)}%
+Interação e colaboração: ${Math.round(r.scores.interaction)}%
+Avaliação: ${Math.round(r.scores.assessment)}%
+Apoio ao estudante: ${Math.round(r.scores.support)}%
+Índice global de desenvolvimento do planejamento: ${Math.round(r.global)}%`}
+function generate(){
+ const ev=checked('evidenceChecks');if(ev.length<2){$('evidenceAlert').classList.remove('hidden');location.hash='#step6';return}if(!frameworkComplete()){location.hash='#step8';$('frameworkIncomplete').classList.remove('hidden');return}
+ const w=checked('whatChecks'),v=checked('studentVoiceChecks'),sh=checked('shareChecks'),f=radio('foco')||'não definido',times=[t('antes')?'antes da atividade: '+t('antes'):'',t('durante')?'durante a atividade: '+t('durante'):'',t('depois')?'após a atividade: '+t('depois'):''].filter(Boolean).join('; ');
+ $('summary').textContent=`Título da proposta: ${t('titulo')||'[não informado]'}
+
+Contexto
+A proposta será desenvolvida em ${t('disciplina')||'[contexto não informado]'}${t('publico')?', com '+t('publico'):''}. Os objetivos de aprendizagem são: ${t('objetivos')||'[não informado]'}. A estratégia/metodologia principal é ${t('metodologia')||'[não informada]'}${t('tecnologias')?', com uso de '+t('tecnologias'):''}.
+
+Questão SoTL
+O aspecto principal de interesse é ${f}. A questão de investigação formulada é: ${t('questao')||'[não informada]'}.
+
+O que pretendo avaliar
+Pretendo recolher evidências sobre ${list(w)}. Isso é importante porque ${t('porqueAvaliar')||'[justificativa não informada]'}.
+
+Quando pretendo avaliar
+${times||'[momentos ainda não definidos]'}.
+
+Evidências
+Para responder à questão, pretendo utilizar ${list(ev)}. Essas evidências poderão contribuir porque ${t('evidenciaJust')||'[não informado]'}. Em relação à complementaridade das fontes: ${t('triangulacao')||'[não informado]'}.
+
+Participação dos estudantes
+Os estudantes participarão por meio de ${list(v)}. Essa participação ocorrerá da seguinte forma: ${t('studentVoiceJust')||'[não informado]'}.
+
+Diagnóstico do planejamento pelo Framework for Effective Courses
+${frameworkSummary()}
+
+Aspecto priorizado para aprimoramento
+${t('frameworkPriority')||'[não informado]'}
+
+Alteração planejada
+${t('frameworkAction')||'[não informada]'}
+
+Uso dos resultados
+Manteria a estratégia se: ${t('manter')||'[não informado]'}.
+Repensaria a estratégia se: ${t('repensar')||'[não informado]'}.
+Caso os resultados não sejam os esperados, pretendo: ${t('mudar')||'[não informado]'}.
+
+Compartilhamento
+Os aprendizados poderão ser compartilhados com/por meio de ${list(sh)}. Essa escolha se justifica porque ${t('shareJust')||'[não informado]'}.
+
+Reflexão final
+${t('reflexaoFinal')||'[não informada]'}
+
+Link do planejamento
+${t('padletLink')||'[não informado]'}`;
+ $('genMessage').classList.remove('hidden');setTimeout(()=>$('genMessage').classList.add('hidden'),2200)
+}
+$('generateBtn').addEventListener('click',generate);
+$('copyBtn').addEventListener('click',async()=>{if($('summary').textContent.startsWith('Preencha'))generate();try{await navigator.clipboard.writeText($('summary').textContent);$('copyBtn').textContent='Copiado!';setTimeout(()=>$('copyBtn').textContent='Copiar síntese',1500)}catch(e){alert('Não foi possível copiar automaticamente. Selecione a síntese e copie manualmente.')}});
+$('printBtn').addEventListener('click',()=>window.print());
+$('resetBtn').addEventListener('click',()=>{if(confirm('Deseja realmente apagar todas as respostas salvas neste navegador?')){localStorage.removeItem(key);inputs.forEach(e=>{if(e.type==='checkbox'||e.type==='radio')e.checked=false;else if(e.tagName==='SELECT')e.selectedIndex=0;else e.value=''});$('summary').textContent='Preencha as etapas e clique em “Gerar síntese para o Moodle”.';update()}});
+window.addEventListener('resize',()=>{const r=fwScores();if(r.full)drawRadar(r.scores)});
+restore();
+})();
+</script>
+</body></html>
